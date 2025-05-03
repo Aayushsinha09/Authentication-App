@@ -1,0 +1,219 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+/* AuthApp.css - General and Theme Styles */
+
+/* --- General Enhancements --- */
+.app-transition {
+  transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, color 0.2s ease-in-out, box-shadow 0.2s ease-in-out, opacity 0.2s ease-in-out;
+}
+
+/* Style completed todos */
+.todo-completed label {
+  text-decoration: line-through;
+  color: var(--bs-secondary);
+}
+/* Style applied via CSS class toggle now */
+
+/* Improve focus rings for accessibility */
+.form-control:focus, .btn:focus, .form-check-input:focus, .form-select:focus {
+  box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.25); /* Use BS primary color */
+  border-color: rgba(var(--bs-primary-rgb), 0.5); /* Match border to focus */
+}
+
+/* Definition List styling */
+dl.row dt {
+    font-weight: 600; /* Make terms bolder */
+}
+dl.row dd {
+    word-break: break-word; /* Prevent long emails overflowing */
+}
+
+/* Todo List enhancements */
+.todo-list .list-group-item {
+  border-left-width: 4px; /* Add accent border */
+  border-left-color: transparent; /* Default transparent */
+}
+.todo-list .list-group-item:not(.todo-completed) {
+   border-left-color: var(--bs-primary); /* Accent for active items */
+}
+.todo-list .list-group-item.todo-completed {
+   border-left-color: var(--bs-secondary); /* Accent for completed items */
+   background-color: rgba(0, 0, 0, 0.03);
+}
+.todo-list .list-group-item:hover {
+  background-color: rgba(var(--bs-primary-rgb), 0.05); /* Subtle hover */
+}
+.todo-list .list-group-item .form-check-label {
+  cursor: pointer; /* Indicate label is clickable */
+  transition: color 0.2s ease-in-out, text-decoration 0.2s ease-in-out; /* Smooth style change */
+}
+.todo-list .list-group-item.todo-completed .form-check-label {
+  text-decoration: line-through;
+  color: var(--bs-secondary); /* Use secondary text color */
+  opacity: 0.8;
+}
+.todo-list .delete-todo-btn {
+    opacity: 0.5; /* Make delete less prominent initially */
+}
+.todo-list .list-group-item:hover .delete-todo-btn {
+    opacity: 1; /* Show fully on hover */
+}
+.todo-empty-message {
+    color: var(--bs-secondary);
+    font-style: italic;
+    background-color: rgba(0,0,0,0.02);
+    border-left-color: var(--bs-secondary) !important; /* Override accent */
+}
+
+
+/* --- Dark Theme Refinements --- */
+body.bg-dark {
+  background-color: #121212 !important; /* Even darker background */
+  color: #e0e0e0 !important; /* Ensure base text color is light */
+}
+
+/* General text color for dark mode */
+.bg-dark .text-light, /* Bootstrap class */
+body.bg-dark { /* Ensure elements inherit light color */
+    color: #e0e0e0 !important;
+}
+.bg-dark .text-muted {
+    color: #888 !important; /* Lighter muted color for dark */
+}
+
+/* Cards, Panels, Lists */
+.bg-dark .card,
+.bg-dark .feature-panel-class, /* Use specific class or check JSX */
+.bg-dark .bg-dark.border-secondary, /* Check this class usage in JSX */
+.bg-dark .list-group-item {
+  background-color: #1e1e1e !important; /* Consistent dark component bg */
+  border-color: #333 !important;
+  color: #e0e0e0 !important; /* Ensure text inside these is light */
+}
+.bg-dark .list-group-item:not(.todo-completed) {
+   border-left-color: var(--bs-info) !important; /* Use info color for dark theme accent */
+}
+.bg-dark .list-group-item.todo-completed {
+   border-left-color: #555 !important; /* Darker accent for completed */
+   background-color: rgba(255, 255, 255, 0.03) !important;
+}
+.bg-dark .list-group-item:hover {
+  background-color: rgba(var(--bs-info-rgb), 0.1) !important;
+}
+/* Ensure text in completed todos is visible */
+.bg-dark .todo-list .list-group-item.todo-completed .form-check-label {
+  color: #888 !important; /* Muted gray for completed text */
+  opacity: 0.8;
+}
+.bg-dark .todo-empty-message {
+    color: #888 !important;
+    background-color: rgba(255,255,255,0.02) !important;
+    border-left-color: #555 !important;
+}
+
+/* Forms */
+.bg-dark .form-control,
+.bg-dark .form-select {
+  background-color: #2a2a2a !important;
+  color: #e0e0e0 !important; /* Ensure input text is light */
+  border-color: #444 !important;
+}
+.bg-dark .form-control::placeholder,
+.bg-dark .placeholder-light::placeholder {
+  color: #888 !important;
+  opacity: 1;
+}
+.bg-dark .form-control:focus,
+.bg-dark .form-select:focus {
+  background-color: #2a2a2a !important;
+  color: #e0e0e0 !important;
+  border-color: var(--bs-info) !important; /* Use info for focus */
+  box-shadow: 0 0 0 0.25rem rgba(var(--bs-info-rgb), 0.25) !important;
+}
+.bg-dark .form-text { color: #999 !important; }
+.bg-dark .form-check-input { background-color: #444; border-color: #666; }
+.bg-dark .form-check-input:checked { background-color: var(--bs-info); border-color: var(--bs-info); }
+.bg-dark .form-check-label { color: #e0e0e0 !important; /* Ensure labels are light */ }
+.bg-dark .form-switch .form-check-input { background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgba(255,255,255,.25)'/%3e%3c/svg%3e"); }
+.bg-dark .form-switch .form-check-input:checked { background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e"); }
+/* Ensure definition list terms/details are visible */
+.bg-dark dl dt, .bg-dark dl dd {
+    color: #e0e0e0 !important;
+}
+
+/* Buttons */
+.bg-dark .btn-primary { background-color: var(--bs-info) !important; border-color: var(--bs-info) !important; color: #121212 !important; }
+.bg-dark .btn-primary:hover { background-color: #4cc9f0 !important; border-color: #4cc9f0 !important; }
+.bg-dark .btn-secondary { background-color: #444 !important; border-color: #444 !important; color: #e0e0e0 !important; }
+.bg-dark .btn-secondary:hover { background-color: #555 !important; border-color: #555 !important; }
+.bg-dark .btn-outline-secondary { color: #aaa !important; border-color: #555 !important; }
+.bg-dark .btn-outline-secondary:hover { color: #1e1e1e !important; background-color: #aaa !important; border-color: #aaa !important; }
+.bg-dark .btn-outline-danger { color: #ff6b6b !important; border-color: #ff6b6b !important; }
+.bg-dark .btn-outline-danger:hover { color: #fff !important; background-color: #e74c3c !important; border-color: #e74c3c !important; }
+.bg-dark .btn-link { color: var(--bs-info) !important; }
+.bg-dark .btn-group > .btn.active { background-color: var(--bs-info) !important; border-color: var(--bs-info) !important; color: #121212 !important; }
+
+
+/* Nav Pills */
+.bg-dark .nav-pills .nav-link { color: #aaa !important; }
+.bg-dark .nav-pills .nav-link:not(.active):hover { background-color: #2a2a2a !important; color: #eee !important; }
+.bg-dark .nav-pills .nav-link.active { background-color: var(--bs-info) !important; color: #121212 !important; }
+
+/* Alerts */
+.bg-dark .alert { border-width: 0 0 0 4px !important; border-style: solid !important; }
+.bg-dark .alert-success { background-color: #1e1e1e !important; color: #6af0b4 !important; border-color: #6af0b4 !important; }
+.bg-dark .alert-danger { background-color: #1e1e1e !important; color: #ff8c8c !important; border-color: #ff8c8c !important; }
+.bg-dark .alert .btn-close { filter: invert(80%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(150%) contrast(80%); }
+
+
+/* Modals */
+.bg-dark .modal-content { background-color: #1e1e1e !important; border-color: #333 !important; color: #e0e0e0 !important; }
+.bg-dark .modal-header { border-bottom-color: #333 !important; }
+.bg-dark .modal-header .modal-title { color: #e0e0e0 !important; } /* Ensure title is visible */
+.bg-dark .modal-footer { border-top-color: #333 !important; }
+
+/* Hr */
+.bg-dark hr { border-top-color: #444 !important; opacity: 1 !important; }
+
+/* Ensure icons inherit color correctly or set explicitly if needed */
+/* Removed empty ruleset for .bg-dark [class^="bi-"], .bg-dark [class*=" bi-"] */
+.bg-dark .text-primary { color: var(--bs-info) !important; } /* Map primary text to info in dark */
+.bg-dark .text-info { color: var(--bs-info) !important; }
+.bg-dark .text-success { color: #6af0b4 !important; }
+/* Add other text color overrides if needed */
