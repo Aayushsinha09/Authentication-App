@@ -29,7 +29,7 @@ const AuthApp = () => {
 
   useEffect(() => {
     const authStatus = localStorage.getItem("auth") === "true";
-    const storedUserString = localStorage.getItem("user");
+    let storedUserString = localStorage.getItem("user"); // Use let
     const storedTheme = localStorage.getItem("theme") || 'light';
     const storedTodos = localStorage.getItem(TODOS_STORAGE_KEY);
     const storedTodoFilter = localStorage.getItem(TODO_FILTER_STORAGE_KEY) || 'all';
@@ -45,12 +45,15 @@ const AuthApp = () => {
 
     if (authStatus && storedUserString) {
       try {
-        let storedUser = JSON.parse(storedUserString);
+        let storedUser = JSON.parse(storedUserString); // Use let
         if (storedUser && storedUser.email) {
+          // Check and default signupDate if missing using Indian format
           if (!storedUser.signupDate) {
-            storedUser.signupDate = new Date().toLocaleDateString();
+            console.log("AuthApp: Adding default signupDate for existing user (IN format).");
+            storedUser.signupDate = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: '2-digit', year: 'numeric' }); // Updated format
             localStorage.setItem("user", JSON.stringify(storedUser));
           }
+
           setIsAuthenticated(true);
           setCurrentUser(storedUser);
           setEditedName(storedUser.name || '');
@@ -104,7 +107,14 @@ const AuthApp = () => {
           if (credentials.password.length < 8) throw new Error("Password must be at least 8 characters long.");
           const existingUser = localStorage.getItem("user");
           if (existingUser && JSON.parse(existingUser).email === credentials.email) throw new Error("Email already registered. Please login.");
-          const newUser = { name: credentials.name, email: credentials.email, password: credentials.password, signupDate: new Date().toLocaleDateString() };
+
+          // Create signupDate using Indian format
+          const newUser = {
+              name: credentials.name,
+              email: credentials.email,
+              password: credentials.password,
+              signupDate: new Date().toLocaleDateString('en-IN', { day: '2-digit', month: '2-digit', year: 'numeric' }) // Updated format
+            };
           localStorage.setItem("user", JSON.stringify(newUser));
           toast.success("Signup successful! Please log in.");
           setIsSignup(false);
@@ -113,17 +123,24 @@ const AuthApp = () => {
         } else {
           if (!credentials.email.trim() || !credentials.password.trim()) throw new Error("Please enter both email and password.");
           const storedUserString = localStorage.getItem("user");
-          const storedUser = storedUserString ? JSON.parse(storedUserString) : null;
+          let storedUser = storedUserString ? JSON.parse(storedUserString) : null;
+
+          // Check and default signupDate on login using Indian format
+          if (storedUser && !storedUser.signupDate) {
+             storedUser.signupDate = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: '2-digit', year: 'numeric' }); // Updated format
+             localStorage.setItem("user", JSON.stringify(storedUser));
+          }
+
           if (storedUser && storedUser.email === credentials.email && storedUser.password === credentials.password) {
             localStorage.setItem("auth", "true");
-            localStorage.setItem("lastLogin", new Date().toLocaleString());
+            localStorage.setItem("lastLogin", new Date().toLocaleString()); // Consider localizing this too if needed
             setIsAuthenticated(true);
             setCurrentUser(storedUser);
             setEditedName(storedUser.name || '');
             setActiveFeature('dashboard');
             setCredentials({ name: "", email: "", password: "" });
             setShowPassword(false);
-            toast.success(`Welcome back, ${storedUser.name}!`);
+            toast.success(`Welcome , ${storedUser.name}!`);
           } else {
             throw new Error("Invalid email or password.");
           }
@@ -243,7 +260,10 @@ const AuthApp = () => {
   const renderDashboard = () => (
     <div>
       <div className="d-flex align-items-center mb-4"> <i className={`bi bi-speedometer2 fs-2 me-3 text-primary ${theme === 'dark' ? 'text-info': ''}`}></i> <div> <h4>Dashboard</h4> <p className="text-muted mb-0">Overview of your application activity.</p> </div> </div> <hr className={theme === 'dark' ? 'border-secondary' : ''}/>
-       <div className={`p-3 mb-4 rounded ${theme === 'dark' ? 'bg-dark' : 'bg-light'}`}> <p className="fs-5">Welcome back, {currentUser?.name || 'User'}!</p> <p className="text-muted small mb-0">Last login: {localStorage.getItem("lastLogin") || "N/A"}</p> </div>
+       <div className={`p-3 mb-4 rounded ${theme === 'dark' ? 'bg-dark' : 'bg-light'}`}> <p className="fs-5">Welcome 
+        
+        
+    , {currentUser?.name || 'User'}!</p> <p className="text-muted small mb-0">Last login: {localStorage.getItem("lastLogin") || "N/A"}</p> </div>
       <h5>Quick Stats</h5>
        <div className="row g-3"> <div className="col-md-4"> <div className={`card ${theme === 'dark' ? 'bg-dark border-secondary' : 'border-primary'} text-center h-100 shadow-sm app-transition`}> <div className="card-body"> <i className="bi bi-list-check fs-3 text-primary mb-2"></i> <h6 className="card-title">Active Tasks</h6> <p className="fs-4 fw-bold mb-0">{activeTodoCount}</p> </div> </div> </div> <div className="col-md-4"> <div className={`card ${theme === 'dark' ? 'bg-dark border-secondary' : 'border-info'} text-center h-100 shadow-sm app-transition`}> <div className="card-body"> {theme === 'dark' ? <i className="bi bi-moon-stars-fill fs-3 text-info mb-2"></i> : <i className="bi bi-brightness-high-fill fs-3 text-info mb-2"></i> } <h6 className="card-title">Current Theme</h6> <p className="fs-4 fw-bold mb-0">{theme.charAt(0).toUpperCase() + theme.slice(1)}</p> </div> </div> </div> <div className="col-md-4"> <div className={`card ${theme === 'dark' ? 'bg-dark border-secondary' : 'border-success'} text-center h-100 shadow-sm app-transition`}> <div className="card-body"> <i className="bi bi-calendar-check fs-3 text-success mb-2"></i> <h6 className="card-title">Joined On</h6> <p className="fs-5 mb-0">{currentUser?.signupDate || 'N/A'}</p> </div> </div> </div> </div>
     </div>
@@ -282,14 +302,14 @@ const AuthApp = () => {
 
       {!isAuthenticated ? (
           <div className={cardClass} style={{ maxWidth: '450px' }}>
-           <div className="text-center mb-4"><h2 className="mt-2">{isSignup ? "Create Account" : "Login"}</h2></div>
-            {message && (<div className={`alert alert-${message.type} d-flex align-items-center alert-dismissible fade show`} role="alert"><i className={`bi ${message.type === 'success' ? 'bi-check-circle-fill' : 'bi-exclamation-triangle-fill'} me-2`}></i><div>{message.text}</div><button type="button" className="btn-close" onClick={() => setMessage(null)} aria-label="Close"></button></div>)}
+           <div className="text-center mb-4"><h2 className="mt-2 fw-bold">{isSignup ? "Create Account" : "Login"}</h2><p className={`text-muted small ${theme === 'dark' ? 'text-light-emphasis' : ''}`}>{isSignup ? 'Fill in the details to register.' : 'Welcome ! Please login.'}</p></div>
+            {message && (<div className={`alert alert-${message.type} d-flex align-items-center alert-dismissible fade show mb-4`} role="alert"><i className={`bi ${message.type === 'success' ? 'bi-check-circle-fill' : 'bi-exclamation-triangle-fill'} me-2`}></i><div>{message.text}</div><button type="button" className="btn-close" onClick={() => setMessage(null)} aria-label="Close"></button></div>)}
             {isSignup && ( <div className="mb-3"> <label htmlFor="nameInput" className="form-label">Name</label> <input id="nameInput" type="text" name="name" placeholder="Your Name" className={formControlClass} value={credentials.name} onChange={handleInputChange} required disabled={isLoading} /> </div> )}
             <div className="mb-3"> <label htmlFor="emailInput" className="form-label">Email Address</label> <input id="emailInput" type="email" name="email" placeholder="email@example.com" className={formControlClass} value={credentials.email} onChange={handleInputChange} required disabled={isLoading} /> </div>
-            <div className={inputGroupClass}> <label htmlFor="passwordInput" className="form-label visually-hidden">Password</label> <input id="passwordInput" type={showPassword ? "text" : "password"} name="password" placeholder="Password" className={formControlClass} value={credentials.password} onChange={handleInputChange} required disabled={isLoading} /> <button className={btnOutlineClass} type="button" onClick={() => setShowPassword(!showPassword)} disabled={isLoading} aria-label={showPassword ? "Hide password" : "Show password"}> <i className={`bi ${showPassword ? 'bi-eye-slash' : 'bi-eye'}`}></i> </button> </div>
+            <div className={inputGroupClass}> <input id="passwordInput" type={showPassword ? "text" : "password"} name="password" placeholder="Password" className={formControlClass} value={credentials.password} onChange={handleInputChange} required disabled={isLoading} /> <button className={btnOutlineClass} type="button" onClick={() => setShowPassword(!showPassword)} disabled={isLoading} aria-label={showPassword ? "Hide password" : "Show password"}> <i className={`bi ${showPassword ? 'bi-eye-slash' : 'bi-eye'}`}></i> </button> </div>
             {isSignup && <div className="form-text mb-3">Password must be at least 8 characters long.</div>}
-             <button className={`btn btn-primary w-100 mb-3 ${btnPrimaryClass}`} onClick={handleAuth} disabled={isLoading}> {isLoading ? <><span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Processing...</> : (isSignup ? "Create Account" : "Login")} </button>
-            <p className="mt-2 text-center mb-0 small"> {isSignup ? "Already have an account?" : "Don't have an account?"}{" "} <button className="btn btn-link p-0 align-baseline" onClick={() => { if (!isLoading) { setIsSignup(!isSignup); setMessage(null); setCredentials({ name: "", email: "", password: "" }); setShowPassword(false); }}} disabled={isLoading}> {isSignup ? "Login here" : "Signup now"} </button> </p>
+             <button className={`btn btn-primary w-100 py-2 mb-4 ${btnPrimaryClass} login-signup-button`} onClick={handleAuth} disabled={isLoading}> {isLoading ? <><span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Processing...</> : (isSignup ? "Create Account" : "Login")} </button>
+            <p className="text-center mb-0 small"> {isSignup ? "Already have an account?" : "Don't have an account?"}{" "} <button className="btn btn-link p-0 align-baseline fw-bold" onClick={() => { if (!isLoading) { setIsSignup(!isSignup); setMessage(null); setCredentials({ name: "", email: "", password: "" }); setShowPassword(false); }}} disabled={isLoading}> {isSignup ? "Login here" : "Signup now"} </button> </p>
           </div>
       ) : (
         <div className="app-authenticated-view">
