@@ -293,7 +293,7 @@ const AuthApp = () => {
           </div>
       ) : (
         <div className="app-authenticated-view">
-            <header className="d-flex flex-wrap justify-content-between align-items-center mb-4 pb-3 border-bottom gap-2"> <h3 className="mb-0 text-primary"><i className="bi bi-shield-check me-2"></i> AuthApp</h3> <div className="d-flex align-items-center gap-2"> <span className="text-muted d-none d-sm-inline">Hello, {currentUser?.name || 'User'}!</span> <button className="btn btn-sm btn-outline-danger app-transition" onClick={() => setShowLogoutModal(true)}> <i className="bi bi-box-arrow-right me-1"></i> Logout </button> </div> </header>
+            <header className="d-flex flex-wrap justify-content-between align-items-center mb-4 pb-3 border-bottom gap-2"> <h3 className="mb-0 text-primary"><i className="bi bi-shield-check me-2"></i> Apex Portal</h3> <div className="d-flex align-items-center gap-2"> <span className="text-muted d-none d-sm-inline">Hello, {currentUser?.name || 'User'}!</span> <button className="btn btn-sm btn-outline-danger app-transition" onClick={() => setShowLogoutModal(true)}> <i className="bi bi-box-arrow-right me-1"></i> Logout </button> </div> </header>
              <ul className="nav nav-pills flex-column flex-md-row nav-fill mb-4 gap-2"> {[ { key: 'dashboard', label: 'Dashboard', icon: 'bi-speedometer2' }, { key: 'profile', label: 'Profile', icon: 'bi-person-circle' }, { key: 'todos', label: 'To-Do List', icon: 'bi-check2-square' }, { key: 'settings', label: 'Settings', icon: 'bi-gear-fill' } ].map(item => ( <li className="nav-item" key={item.key}> <button className={navLinkClass(activeFeature === item.key)} onClick={() => setActiveFeature(item.key)}> <i className={`bi ${item.icon}`}></i> <span>{item.label}</span> </button> </li> ))} </ul>
             <main className={featurePanelClass}>
                 {activeFeature === 'dashboard' && renderDashboard()}
@@ -301,7 +301,7 @@ const AuthApp = () => {
                 {activeFeature === 'todos' && renderTodos()}
                 {activeFeature === 'settings' && renderSettings()}
             </main>
-            <footer className="mt-5 py-3 text-center text-muted small border-top"> AuthApp Enhanced &copy; {new Date().getFullYear()} </footer>
+            <footer className="mt-5 py-3 text-center text-muted small border-top"> Apex Portal &copy; {new Date().getFullYear()} </footer>
             {showLogoutModal && ( <> <div className="modal-backdrop fade show" onClick={() => setShowLogoutModal(false)}></div> <div className="modal fade show" tabIndex="-1" style={{ display: 'block' }} aria-labelledby="logoutModalLabel" aria-modal="true" role="dialog"> <div className="modal-dialog modal-dialog-centered"> <div className={modalContentClass}> <div className="modal-header"> <h5 className="modal-title" id="logoutModalLabel">Confirm Logout</h5> <button type="button" className={`btn-close ${theme === 'dark' ? 'btn-close-white': ''}`} aria-label="Close" onClick={() => setShowLogoutModal(false)}></button> </div> <div className="modal-body"> Are you sure you want to log out? </div> <div className="modal-footer"> <button type="button" className="btn btn-secondary app-transition" onClick={() => setShowLogoutModal(false)}>Cancel</button> <button type="button" className="btn btn-danger app-transition" onClick={handleLogout}>Logout</button> </div> </div> </div> </div> </> )}
         </div>
       )}
